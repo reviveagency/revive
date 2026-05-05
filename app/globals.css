@@ -1,0 +1,173 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-bg: #f5f5f5;
+  --color-surface: #ffffff;
+  --color-surface-2: #efefef;
+  --color-ink: #0a0a0a;
+  --color-ink-muted: rgba(10, 10, 10, 0.62);
+  --color-ink-faint: rgba(10, 10, 10, 0.36);
+  --color-line: rgba(10, 10, 10, 0.1);
+  --color-line-strong: rgba(10, 10, 10, 0.18);
+  --color-orange: #f26522;
+  --color-orange-deep: #e8461c;
+  --color-orange-warm: #f7941d;
+  --color-orange-soft: rgba(242, 101, 34, 0.12);
+
+  --font-sans: var(--font-sora);
+  --font-serif: var(--font-fraunces);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --container-page: 1280px;
+  --container-narrow: 960px;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, sans-serif;
+  font-feature-settings: "ss01", "ss02", "cv11";
+}
+
+::selection {
+  background: var(--color-orange);
+  color: white;
+}
+
+/* subtle paper grain — keeps the light bg from feeling sterile */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0.025;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* shared display utility */
+.font-display {
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
+}
+.font-editorial {
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  font-style: italic;
+}
+
+/* container helpers */
+.container-page {
+  width: 100%;
+  max-width: var(--container-page);
+  margin-inline: auto;
+  padding-inline: clamp(20px, 5vw, 80px);
+}
+.container-narrow {
+  width: 100%;
+  max-width: var(--container-narrow);
+  margin-inline: auto;
+  padding-inline: clamp(20px, 5vw, 80px);
+}
+
+/* gradient text helper */
+.text-gradient-orange {
+  background: linear-gradient(
+    135deg,
+    var(--color-orange-deep) 0%,
+    var(--color-orange) 45%,
+    var(--color-orange-warm) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* underline-on-hover link style */
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  transition: background-size 0.4s var(--ease-out-expo);
+}
+.link-underline:hover {
+  background-size: 100% 1px;
+}
+
+/* inset-button — orange CTA */
+.btn-orange {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--color-orange);
+  color: #fff;
+  padding: 0.95rem 1.4rem;
+  border-radius: 999px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  transition:
+    transform 0.4s var(--ease-out-expo),
+    background 0.3s ease,
+    box-shadow 0.4s var(--ease-out-expo);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+  will-change: transform;
+}
+.btn-orange:hover {
+  background: var(--color-orange-deep);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px -12px rgba(242, 101, 34, 0.55);
+}
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-ink);
+  padding: 0.95rem 1.4rem;
+  border-radius: 999px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  border: 1px solid var(--color-line-strong);
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+.btn-ghost:hover {
+  border-color: var(--color-ink);
+  background: var(--color-surface);
+}
+
+/* hide scrollbar but allow scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
