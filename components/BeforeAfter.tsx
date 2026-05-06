@@ -1,14 +1,7 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useCallback } from "react";
 import Image from "next/image";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useMotionTemplate,
-  useReducedMotion,
-} from "framer-motion";
 import { Reveal } from "./ui/Reveal";
 import { CountUp } from "./ui/CountUp";
 
@@ -19,26 +12,29 @@ type Props = {
 };
 
 /**
- * Before/After slider driven by vertical scroll progress.
- * As the section scrolls through the viewport, the divider sweeps from
- * left (8%) to right (92%), revealing the "after" image.
- * No manual drag — pure scroll-driven.
+ * Hover/cursor-driven before/after slider.
+ * - On desktop: as the cursor moves over the slider, the divider tracks the
+ *   horizontal position 1:1. No click required.
+ * - On touch: tap-and-drag works as a fallback (pointermove only fires while
+ *   finger is down on touch devices).
+ * - The divider stays where the cursor left it — so a user can compare a
+ *   detail and then read the section without the slider snapping back.
  */
 export function BeforeAfter({ beforeImage, afterImage, alt }: Props) {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const prefersReduced = useReducedMotion();
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [pos, setPos] = useState(50);
+  const [active, setActive] = useState(false);
 
-  // Map scroll progress through this section to a slider position 8..92
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start 80%", "end 20%"],
-  });
-  const sliderPos = useTransform(scrollYProgress, [0.05, 0.95], [8, 92]);
-  const clipPath = useMotionTemplate`inset(0 0 0 ${sliderPos}%)`;
-  const handleLeft = useMotionTemplate`${sliderPos}%`;
+  const update = useCallback((clientX: number) => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = ((clientX - rect.left) / rect.width) * 100;
+    setPos(Math.max(2, Math.min(98, x)));
+  }, []);
 
   return (
-    <section ref={sectionRef} className="container-page mt-32">
+    <section className="container-page mt-32">
       <Reveal>
         <div className="grid md:grid-cols-[1.1fr_1fr] gap-12 md:gap-20 items-end">
           <div>
@@ -47,7 +43,7 @@ export function BeforeAfter({ beforeImage, afterImage, alt }: Props) {
             </div>
             <h2 className="font-display mt-4 text-[clamp(2rem,4.6vw,3.6rem)] max-w-[18ch]">
               See your site before and after.{" "}
-              <span className="font-editorial text-orange">Just scroll.</span>
+              <span className="font-editorial text-orange">Just hover.</span>
             </h2>
           </div>
           <p className="text-base md:text-lg text-ink-muted leading-relaxed max-w-[42ch] md:justify-self-end">
@@ -59,47 +55,41 @@ export function BeforeAfter({ beforeImage, afterImage, alt }: Props) {
       </Reveal>
 
       <Reveal delay={0.1}>
-        <div className="mt-14 relative aspect-[16/10] rounded-2xl overflow-hidden border border-line-strong bg-surface">
+        <div
+          ref={wrapRef}
+          onPointerMove={(e) => update(e.clientX)}
+          onPointerEnter={() => setActive(true)}
+          onPointerLeave={() => setActive(false)}
+          className="mt-14 relative aspect-[16/10] rounded-2xl overflow-hidden border border-line-strong bg-surface select-none touch-none cursor-ew-resize"
+          aria-label="Drag or hover to compare before and after"
+        >
           {/* before — full bleed underneath */}
           <Image
             src={beforeImage}
             alt={`${alt} before`}
             fill
             priority
-            className="object-cover"
+            className="object-cover pointer-events-none"
             sizes="100vw"
           />
 
-          {/* after — clipped from left based on scroll progress */}
-          {prefersReduced ? (
-            <div
-              className="absolute inset-0"
-              style={{ clipPath: "inset(0 0 0 50%)" }}
-            >
-              <Image
-                src={afterImage}
-                alt={`${alt} after`}
-                fill
-                priority
-                className="object-cover"
-                sizes="100vw"
-              />
-            </div>
-          ) : (
-            <motion.div
-              className="absolute inset-0"
-              style={{ clipPath, willChange: "clip-path" }}
-            >
-              <Image
-                src={afterImage}
-                alt={`${alt} after`}
-                fill
-                priority
-                className="object-cover"
-                sizes="100vw"
-              />
-            </motion.div>
-          )}
+          {/* after — clipped from the left based on cursor position */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              clipPath: `inset(0 0 0 ${pos}%)`,
+              transition: active ? "none" : "clip-path 0.5s cubic-bezier(0.16,1,0.3,1)",
+            }}
+          >
+            <Image
+              src={afterImage}
+              alt={`${alt} after`}
+              fill
+              priority
+              className="object-cover"
+              sizes="100vw"
+            />
+          </div>
 
           {/* labels */}
           <div className="absolute top-4 left-4 text-xs uppercase tracking-[0.2em] text-white/95 bg-black/55 backdrop-blur px-3 py-1.5 rounded-full pointer-events-none">
@@ -110,43 +100,26 @@ export function BeforeAfter({ beforeImage, afterImage, alt }: Props) {
           </div>
 
           {/* divider line + handle */}
-          {prefersReduced ? (
-            <div
-              className="absolute top-0 bottom-0 w-px bg-white/95 shadow-[0_0_24px_rgba(0,0,0,0.25)] pointer-events-none"
-              style={{ left: "50%" }}
-              aria-hidden
-            >
-              <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 size-12 rounded-full bg-white border border-line-strong grid place-items-center text-ink shadow-lg">
-                <Arrows />
-              </div>
+          <div
+            className="absolute top-0 bottom-0 w-px bg-white/95 shadow-[0_0_24px_rgba(0,0,0,0.25)] pointer-events-none"
+            style={{
+              left: `${pos}%`,
+              transition: active ? "none" : "left 0.5s cubic-bezier(0.16,1,0.3,1)",
+            }}
+            aria-hidden
+          >
+            <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 size-12 rounded-full bg-white border border-line-strong grid place-items-center text-ink shadow-lg">
+              <Arrows />
             </div>
-          ) : (
-            <motion.div
-              className="absolute top-0 bottom-0 w-px bg-white/95 shadow-[0_0_24px_rgba(0,0,0,0.25)] pointer-events-none"
-              style={{ left: handleLeft }}
-              aria-hidden
-            >
-              <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 size-12 rounded-full bg-white border border-line-strong grid place-items-center text-ink shadow-lg">
-                <Arrows />
-              </div>
-            </motion.div>
-          )}
+          </div>
 
-          {/* scroll hint — fades out after first quarter */}
-          {!prefersReduced && (
-            <motion.div
-              className="absolute bottom-5 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.22em] text-white/85 bg-black/45 backdrop-blur px-3 py-1.5 rounded-full pointer-events-none"
-              style={{
-                opacity: useTransform(
-                  scrollYProgress,
-                  [0, 0.15, 0.35],
-                  [1, 1, 0],
-                ),
-              }}
-            >
-              Scroll to reveal
-            </motion.div>
-          )}
+          {/* hint — fades out once the user starts interacting */}
+          <div
+            className="absolute bottom-5 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.22em] text-white/85 bg-black/45 backdrop-blur px-3 py-1.5 rounded-full pointer-events-none transition-opacity duration-500"
+            style={{ opacity: active ? 0 : 1 }}
+          >
+            Hover to compare
+          </div>
         </div>
       </Reveal>
 

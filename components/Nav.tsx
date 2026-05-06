@@ -60,7 +60,7 @@ export function Nav() {
           ))}
         </nav>
 
-        <Link href="/book" className="btn-orange text-sm">
+        <Link href="/#book" className="btn-orange text-sm">
           Book audit
           <ArrowUpRight size={16} strokeWidth={2.2} />
         </Link>

@@ -38,7 +38,14 @@ function normaliseUrl(raw: string): string | null {
   }
 }
 
-export function BookingForm({ calendlyUrl }: { calendlyUrl: string }) {
+export function BookingForm({
+  calendlyUrl,
+  variant = "light",
+}: {
+  calendlyUrl: string;
+  variant?: "light" | "dark";
+}) {
+  const onDark = variant === "dark";
   const [step, setStep] = useState<1 | 2>(1);
   const [data, setData] = useState<FormData>({
     email: "",
@@ -88,7 +95,7 @@ export function BookingForm({ calendlyUrl }: { calendlyUrl: string }) {
   return (
     <div className="mt-14 mx-auto max-w-[680px]">
       {/* Progress indicator */}
-      <ProgressDots step={step} />
+      <ProgressDots step={step} onDark={onDark} />
 
       <div className="mt-8 rounded-2xl bg-surface border border-line shadow-[0_24px_60px_-30px_rgba(10,10,10,0.18)] overflow-hidden">
         <AnimatePresence mode="wait">
@@ -352,7 +359,13 @@ function Field({
   );
 }
 
-function ProgressDots({ step }: { step: 1 | 2 }) {
+function ProgressDots({
+  step,
+  onDark = false,
+}: {
+  step: 1 | 2;
+  onDark?: boolean;
+}) {
   const items = [
     { n: 1, label: "Your site" },
     { n: 2, label: "Book a call" },
@@ -363,6 +376,16 @@ function ProgressDots({ step }: { step: 1 | 2 }) {
       {items.map((it, i) => {
         const active = step === it.n;
         const done = step > it.n;
+        const inactiveCircle = onDark
+          ? "bg-white/8 border border-white/20 text-white/55"
+          : "bg-surface border border-line-strong text-ink-faint";
+        const inactiveLabel = onDark ? "text-white/55" : "text-ink-faint";
+        const activeLabel = onDark
+          ? "text-white font-medium"
+          : "text-ink font-medium";
+        const doneCircle = onDark ? "bg-white text-ink" : "bg-ink text-white";
+        const connector = onDark ? "bg-white/20" : "bg-line-strong";
+
         return (
           <li key={it.n} className="flex items-center gap-3 sm:gap-5">
             <div className="flex items-center gap-2.5">
@@ -371,8 +394,8 @@ function ProgressDots({ step }: { step: 1 | 2 }) {
                   active
                     ? "bg-orange text-white"
                     : done
-                      ? "bg-ink text-white"
-                      : "bg-surface border border-line-strong text-ink-faint"
+                      ? doneCircle
+                      : inactiveCircle
                 }`}
                 aria-current={active ? "step" : undefined}
               >
@@ -380,7 +403,7 @@ function ProgressDots({ step }: { step: 1 | 2 }) {
               </div>
               <span
                 className={`text-xs sm:text-sm tracking-tight ${
-                  active ? "text-ink font-medium" : "text-ink-faint"
+                  active ? activeLabel : inactiveLabel
                 }`}
               >
                 {it.label}
@@ -388,7 +411,7 @@ function ProgressDots({ step }: { step: 1 | 2 }) {
             </div>
             {i < items.length - 1 && (
               <div
-                className="hidden sm:block h-px w-10 bg-line-strong"
+                className={`hidden sm:block h-px w-10 ${connector}`}
                 aria-hidden
               />
             )}

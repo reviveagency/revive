@@ -5,8 +5,8 @@ import { AnnotatedCanvas } from "@/components/AnnotatedCanvas";
 import { Process } from "@/components/Process";
 import { CaseStudiesGrid } from "@/components/CaseStudiesGrid";
 import { ReviewsMarquee } from "@/components/ReviewsMarquee";
+import { ClaimDirection } from "@/components/ClaimDirection";
 import { FAQ } from "@/components/FAQ";
-import { FinalCTA } from "@/components/FinalCTA";
 
 export default function Home() {
   return (
@@ -22,8 +22,8 @@ export default function Home() {
       <Process />
       <CaseStudiesGrid />
       <ReviewsMarquee />
+      <ClaimDirection />
       <FAQ />
-      <FinalCTA />
     </>
   );
 }

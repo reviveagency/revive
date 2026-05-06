@@ -45,13 +45,21 @@ export function RotatingText({
         display: "inline-block",
         position: "relative",
         verticalAlign: "baseline",
+        // boost line-height so descenders (g, p, y, j) and the trailing period fit
+        lineHeight: 1.2,
+        // give the clip box a little bottom room without shifting the baseline
+        paddingBottom: "0.12em",
       }}
     >
       {/* invisible sizer (also gets the gradient class so width measures match exactly) */}
       <span
         aria-hidden
         className={className}
-        style={{ visibility: "hidden", whiteSpace: "nowrap" }}
+        style={{
+          visibility: "hidden",
+          whiteSpace: "nowrap",
+          lineHeight: "inherit",
+        }}
       >
         {longest}
       </span>
@@ -72,7 +80,11 @@ export function RotatingText({
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: "-110%", opacity: 0 }}
             transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            style={{ whiteSpace: "nowrap", display: "inline-block" }}
+            style={{
+              whiteSpace: "nowrap",
+              display: "inline-block",
+              lineHeight: "inherit",
+            }}
           >
             {words[index]}
           </motion.span>
