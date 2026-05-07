@@ -4,6 +4,7 @@ import { BeforeAfter } from "@/components/BeforeAfter";
 import { AnnotatedCanvas } from "@/components/AnnotatedCanvas";
 import { Process } from "@/components/Process";
 import { CaseStudiesGrid } from "@/components/CaseStudiesGrid";
+import { FounderSection } from "@/components/FounderSection";
 import { ReviewsMarquee } from "@/components/ReviewsMarquee";
 import { ClaimDirection } from "@/components/ClaimDirection";
 import { FAQ } from "@/components/FAQ";
@@ -21,6 +22,7 @@ export default function Home() {
       <AnnotatedCanvas />
       <Process />
       <CaseStudiesGrid />
+      <FounderSection />
       <ReviewsMarquee />
       <ClaimDirection />
       <FAQ />

@@ -14,8 +14,8 @@ export function CaseStudiesGrid() {
               Recent work
             </div>
             <h2 className="font-display mt-4 text-[clamp(2rem,4.6vw,3.6rem)] max-w-[20ch]">
-              Five sites.{" "}
-              <span className="font-editorial text-orange">Five problems solved.</span>
+              Four sites.{" "}
+              <span className="font-editorial text-orange">Four problems solved.</span>
             </h2>
           </div>
           <p className="text-base md:text-lg text-ink-muted leading-relaxed max-w-[42ch] md:justify-self-end">
@@ -27,9 +27,9 @@ export function CaseStudiesGrid() {
 
       <div className="grid md:grid-cols-12 gap-6 md:gap-8">
         {caseStudies
-          .filter((cs) => cs.slug !== "fds")
+          .filter((cs) => cs.slug !== "touro-e-fogo")
           .map((cs, i) => {
-            // BTW (0) and KontrolWater (3) full-width; Break the Wire and Touro half each.
+            // BTW (0) full-width, Break the Wire (1) half, KontrolWater (2) half, FDS (3) full-width.
             const span =
               i === 0 || i === 3 ? "md:col-span-12" : "md:col-span-6";
             return (

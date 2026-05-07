@@ -3,78 +3,72 @@
 import { useReducedMotion } from "framer-motion";
 import { Reveal } from "./ui/Reveal";
 
-/**
- * Reviews use realistic portrait photos from i.pravatar.cc (a curated stock set
- * licensed for UI mockups). Swap to actual client photos pre-launch.
- */
+const BADGE_PALETTE = [
+  { bg: "rgba(242,101,34,0.11)", color: "#d4521a" },
+  { bg: "rgba(10,10,10,0.07)", color: "#444" },
+  { bg: "rgba(79,70,229,0.10)", color: "#4338ca" },
+  { bg: "rgba(5,150,105,0.10)", color: "#047857" },
+  { bg: "rgba(220,38,38,0.09)", color: "#b91c1c" },
+];
+
 const REVIEWS = [
   {
     name: "Olivia M.",
     role: "Founder, BTW Creative",
-    img: "https://i.pravatar.cc/240?img=47",
     quote:
       "Honestly didnt expect a 'free direction' to be a real piece of work, but the wireframe annotations were ridiculously detailed. Comissioned the build the same week.",
   },
   {
     name: "Daniel R.",
     role: "MD, Break the Wire",
-    img: "https://i.pravatar.cc/240?img=12",
     quote:
       "we'd been on shopify default for like 3 years and i kept putting off doing anything about it. revive made the redesign feel small and the rebuild feel inevitable. AOV up by a third in the first quarter.",
   },
   {
     name: "Sofia P.",
     role: "Owner, Touro e Fogo",
-    img: "https://i.pravatar.cc/240?img=49",
     quote:
       "they got us, like really got us. the photographer they brought in shot the room better than anyone we've used before. reservations from the site basically doubled.",
   },
   {
     name: "Vitor M.",
     role: "Founder, KontrolWater",
-    img: "https://i.pravatar.cc/240?img=8",
     quote:
       "Sales calls used to start with us proving the product was real. Now they start with 'when can you install'. That alone paid for the build twice over.",
   },
   {
     name: "Alex F.",
     role: "Director, Familia Do Sucesso",
-    img: "https://i.pravatar.cc/240?img=68",
     quote:
       "I was honestly braced for an agency pitch and got a real piece of work instead. spent the audit call mostly nodding.",
   },
   {
     name: "Jordan H.",
     role: "CMO, Atlas Studio",
-    img: "https://i.pravatar.cc/240?img=24",
     quote:
       "the 48hr direction was the part i didnt expect tbh. we made the call to commission within an hour of seeing it.",
   },
   {
     name: "Priya S.",
     role: "COO, Northwind",
-    img: "https://i.pravatar.cc/240?img=44",
     quote:
       "Sharp opinions backed up by real data. Felt like working with a senior team, not a freelancer trying to sound like one.",
   },
   {
     name: "Marc T.",
     role: "GM, Curio",
-    img: "https://i.pravatar.cc/240?img=14",
     quote:
       "the audit alone was worth more than what some agencies charged us for a full launch. wild.",
   },
   {
     name: "Lena K.",
     role: "Founder, Field Notes",
-    img: "https://i.pravatar.cc/240?img=5",
     quote:
       "they cut three sections, rewrote my hero, and our conversion doubled. that was literally it.",
   },
   {
     name: "Tom B.",
     role: "Head of Brand, Evergreen",
-    img: "https://i.pravatar.cc/240?img=33",
     quote:
       "Brutally honest about what was broken. Then ruthlessly good at fixing it. Wouldnt go to anyone else now.",
   },
@@ -122,7 +116,9 @@ export function ReviewsMarquee() {
                 }
           }
         >
-          {[...REVIEWS, ...REVIEWS].map((r, i) => (
+          {[...REVIEWS, ...REVIEWS].map((r, i) => {
+            const p = BADGE_PALETTE[i % BADGE_PALETTE.length];
+            return (
             <article
               key={i}
               className="w-[340px] md:w-[400px] shrink-0 bg-surface border border-line rounded-2xl p-7 flex flex-col gap-5"
@@ -131,20 +127,21 @@ export function ReviewsMarquee() {
                 &ldquo;{r.quote}&rdquo;
               </p>
               <div className="flex items-center gap-3 mt-auto">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={r.img}
-                  alt={r.name}
-                  className="size-10 rounded-full object-cover bg-surface-2"
-                  loading="lazy"
-                />
+                <div
+                  className="size-10 rounded-full shrink-0 flex items-center justify-center text-sm font-semibold"
+                  style={{ background: p.bg, color: p.color }}
+                  aria-hidden
+                >
+                  {r.name[0]}
+                </div>
                 <div>
                   <div className="text-sm font-medium">{r.name}</div>
                   <div className="text-xs text-ink-faint">{r.role}</div>
                 </div>
               </div>
             </article>
-          ))}
+            );
+          })}
         </div>
       </div>
 
