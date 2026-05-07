@@ -28,9 +28,7 @@ export function Hero() {
           transition={{ duration: 0.95, ease, delay: 0.05 }}
           className="font-display text-[clamp(2.4rem,7.4vw,6.6rem)] max-w-[18ch]"
         >
-          If your website isn&rsquo;t converting,
-          <br />
-          it&rsquo;s{" "}
+          If your website isn&rsquo;t converting, it&rsquo;s{" "}
           <RotatingText
             className="text-gradient-orange"
             words={ROTATING}

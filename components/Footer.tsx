@@ -23,13 +23,14 @@ export function Footer() {
           items={[
             { href: "/work/btw-creative", label: "BTW Creative" },
             { href: "/work/break-the-wire", label: "Break the Wire" },
-            { href: "/work/touro-e-fogo", label: "Touro e Fogo" },
             { href: "/work/kontrolwater", label: "KontrolWater" },
+            { href: "/work/fds", label: "Familia Do Sucesso" },
           ]}
         />
         <FooterCol
           title="Studio"
           items={[
+            { href: "/about", label: "About" },
             { href: "/#process", label: "Process" },
             { href: "/#faq", label: "FAQ" },
             { href: "/book", label: "Book audit" },

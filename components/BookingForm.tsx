@@ -56,8 +56,10 @@ export function BookingForm({
   const [errors, setErrors] = useState<Errors>({});
   const emailRef = useRef<HTMLInputElement>(null);
   const step2HeadingRef = useRef<HTMLHeadingElement>(null);
+  const didMount = useRef(false);
 
   useEffect(() => {
+    if (!didMount.current) { didMount.current = true; return; }
     if (step === 1) emailRef.current?.focus();
     if (step === 2) step2HeadingRef.current?.focus();
   }, [step]);
