@@ -14,8 +14,8 @@ export function CaseStudiesGrid() {
               Recent work
             </div>
             <h2 className="font-display mt-4 text-[clamp(2rem,4.6vw,3.6rem)] max-w-[20ch]">
-              Four sites.{" "}
-              <span className="font-editorial text-orange">Four problems solved.</span>
+              Five sites.{" "}
+              <span className="font-editorial text-orange">Five problems solved.</span>
             </h2>
           </div>
           <p className="text-base md:text-lg text-ink-muted leading-relaxed max-w-[42ch] md:justify-self-end">
@@ -29,9 +29,9 @@ export function CaseStudiesGrid() {
         {caseStudies
           .filter((cs) => cs.slug !== "touro-e-fogo")
           .map((cs, i) => {
-            // BTW (0) full-width, Break the Wire (1) half, KontrolWater (2) half, FDS (3) full-width.
+            // After filter: BTW (0) full, Break the Wire (1) half, KontrolWater (2) half, Fim de Século (3) full, FDS (4) full.
             const span =
-              i === 0 || i === 3 ? "md:col-span-12" : "md:col-span-6";
+              i === 0 || i >= 3 ? "md:col-span-12" : "md:col-span-6";
             return (
             <Reveal key={cs.slug} delay={(i % 3) * 0.08} className={span}>
               <Link

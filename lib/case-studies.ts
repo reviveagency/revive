@@ -167,6 +167,39 @@ export const caseStudies: CaseStudy[] = [
     ],
   },
   {
+    slug: "fim-de-seculo",
+    name: "Fim de Século",
+    tagline: "Award-winning Lisbon pastelaria, framed like the craft it is.",
+    client: "Fim de Século",
+    year: "2025",
+    industry: "Hospitality",
+    liveUrl: "https://fimdeseculo.pt",
+    hero: "/media/fim-de-seculo.png",
+    mobileHero: "/media/fim-de-seculo-mobile.png",
+    brief:
+      "Fim de Século is a Lisbon pastelaria that took the 8th annual 'Melhor Pastel de Nata' prize in Portugal. Two locations, decades of craft, and a reputation built one tray at a time. The previous site read like a generic local-business template and the award was buried.",
+    challenge:
+      "Authority needed to land in the first screen. Visitors had to feel the award, the craft, and the appetite within seconds, not after three scrolls. Locations and directions had to stay one tap away on mobile.",
+    approach: [
+      "Hero rebuilt around food photography. Big editorial type, no carousel.",
+      "The 'Melhor Pastel de Nata' award surfaced as a permanent trust signal, not a buried badge.",
+      "Two locations promoted side by side with one-tap directions from anywhere on the site.",
+      "Brand voice tightened to Portuguese-first with a confident, modern register.",
+    ],
+    // TODO: replace placeholder zeros with real numbers from the Fim de Século engagement
+    outcomes: [
+      { label: "Avg. session duration", value: 0, suffix: "%", decimals: 0 },
+      { label: "Directions taps on mobile", value: 0, suffix: "%", decimals: 0 },
+      { label: "Mobile-bounce", value: 0, suffix: "%", decimals: 0 },
+    ],
+    process: [
+      { phase: "Audit", detail: "In-store visit + analytics review of how visitors actually use the site on mobile around the lunch rush." },
+      { phase: "Direction", detail: "Two redesign directions in 48 hours; chosen direction led with the food and the award." },
+      { phase: "Build", detail: "Shopify front-end rebuild keeping existing product catalogue and ordering flow intact." },
+      { phase: "Hand-off", detail: "Editable hero, award, and locations so the brand can update without touching code." },
+    ],
+  },
+  {
     slug: "fds",
     name: "Familia Do Sucesso",
     tagline: "Cohesive media-house identity for a multi-brand operator.",
