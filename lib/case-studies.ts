@@ -7,6 +7,7 @@ export type CaseStudy = {
   industry: string;
   liveUrl?: string;
   hero: string;
+  mobileHero?: string;
   brief: string;
   challenge: string;
   approach: string[];
@@ -26,6 +27,7 @@ export const caseStudies: CaseStudy[] = [
     industry: "Creative studio",
     liveUrl: "https://btwcreative.co.uk",
     hero: "/media/btw-creative.png",
+    mobileHero: "/media/btw-creative-mobile.png",
     brief:
       "BTW Creative is a UK studio doing bold brand work, but their site read as quiet. Visitors couldn't tell, within five seconds, that this was a studio with strong opinions and a sharp portfolio.",
     challenge:
@@ -63,6 +65,7 @@ export const caseStudies: CaseStudy[] = [
     industry: "Direct-to-consumer",
     liveUrl: "https://breakthewire.co.uk",
     hero: "/media/break-the-wire.png",
+    mobileHero: "/media/break-the-wire-mobile.png",
     brief:
       "Break the Wire makes products with a real story behind them, but the existing site led with discount codes and stock imagery. Premium customers couldn't tell what they were buying or why it cost what it cost.",
     challenge:
@@ -135,6 +138,7 @@ export const caseStudies: CaseStudy[] = [
     industry: "Smart hardware",
     liveUrl: "https://kontrolwater.com",
     hero: "/media/kontrolwater.png",
+    mobileHero: "/media/kontrolwater-mobile.png",
     brief:
       "KontrolWater is intelligent pool management for high-end residences and commercial pools. The product is genuinely premium. The previous site read as a 2014 industrial-equipment brochure.",
     challenge:
@@ -171,6 +175,7 @@ export const caseStudies: CaseStudy[] = [
     industry: "Media / multi-brand",
     liveUrl: "https://fdsmedia.co",
     hero: "/media/fds.png",
+    mobileHero: "/media/fds-mobile.png",
     brief:
       "Familia Do Sucesso runs multiple consumer brands under one roof. Their website needed to clearly position the studio as the media operator behind those brands, not as a generic agency.",
     challenge:

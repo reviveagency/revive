@@ -104,22 +104,35 @@ export function CaseStudyView({ caseStudy }: { caseStudy: CaseStudy }) {
           </div>
         </Reveal>
         <Reveal delay={0.06}>
-          {/* TODO: replace with real mobile screenshot from {caseStudy.client} at 390px width */}
-          <div
-            className="mx-auto w-[390px] max-w-full rounded-2xl border border-dashed border-line-strong bg-surface aspect-[390/844] grid place-items-center text-center px-6"
-            role="img"
-            aria-label={`${caseStudy.name} mobile screenshot placeholder`}
-          >
-            <div>
-              <div className="text-xs uppercase tracking-[0.18em] text-ink-faint mb-3">
-                Mobile screenshot · 390 × 844
-              </div>
-              <div className="text-sm text-ink-muted leading-relaxed max-w-[28ch] mx-auto">
-                Placeholder. Replace with the real mobile screenshot from{" "}
-                {caseStudy.client}.
+          {caseStudy.mobileHero ? (
+            <div className="mx-auto w-[390px] max-w-full rounded-2xl overflow-hidden border border-line bg-surface">
+              <Image
+                src={caseStudy.mobileHero}
+                alt={`${caseStudy.name} mobile site`}
+                width={1320}
+                height={2868}
+                sizes="390px"
+                className="w-full h-auto block"
+              />
+            </div>
+          ) : (
+            // TODO: replace with real mobile screenshot from {caseStudy.client} at 390px width
+            <div
+              className="mx-auto w-[390px] max-w-full rounded-2xl border border-dashed border-line-strong bg-surface aspect-[390/844] grid place-items-center text-center px-6"
+              role="img"
+              aria-label={`${caseStudy.name} mobile screenshot placeholder`}
+            >
+              <div>
+                <div className="text-xs uppercase tracking-[0.18em] text-ink-faint mb-3">
+                  Mobile screenshot · 390 × 844
+                </div>
+                <div className="text-sm text-ink-muted leading-relaxed max-w-[28ch] mx-auto">
+                  Placeholder. Replace with the real mobile screenshot from{" "}
+                  {caseStudy.client}.
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </Reveal>
       </section>
 
