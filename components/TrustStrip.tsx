@@ -22,6 +22,7 @@ export function TrustStrip() {
                     decimals={s.decimals}
                     prefix={s.prefix}
                     suffix={s.suffix}
+                    duration={1.2}
                   />
                 </div>
                 <div className="text-xs uppercase tracking-[0.16em] text-ink-faint max-w-[18ch]">

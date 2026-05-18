@@ -36,13 +36,13 @@ export function CaseStudiesGrid() {
             <Reveal key={cs.slug} delay={(i % 3) * 0.08} className={span}>
               <Link
                 href={`/work/${cs.slug}`}
-                className="group block relative overflow-hidden rounded-2xl border border-line bg-surface aspect-[16/10] md:aspect-auto md:h-[clamp(360px,42vw,560px)]"
+                className="group block relative overflow-hidden rounded-2xl border border-line bg-surface aspect-[16/10] md:aspect-auto md:h-[clamp(360px,42vw,560px)] shadow-[0_1px_0_rgba(10,10,10,0.04)] hover:shadow-[0_22px_44px_-22px_rgba(10,10,10,0.35)] hover:-translate-y-1 transition-[transform,box-shadow] duration-200 ease-out will-change-transform"
               >
                 <Image
                   src={cs.hero}
                   alt={cs.name}
                   fill
-                  className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
+                  className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/15 to-transparent" />

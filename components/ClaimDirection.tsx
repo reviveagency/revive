@@ -14,7 +14,7 @@ export function ClaimDirection() {
   return (
     <section
       id="book"
-      className="relative mt-40 md:mt-48 py-24 md:py-32 text-white"
+      className="relative overflow-hidden mt-40 md:mt-48 py-24 md:py-32 text-white"
       style={{ background: "#15171b" }}
     >
       {/* soft orange spark off-canvas, top-right */}

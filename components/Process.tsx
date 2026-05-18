@@ -35,10 +35,12 @@ function ProcessStep({
   n,
   title,
   detail,
+  delay,
 }: {
   n: number;
   title: string;
   detail: string;
+  delay: number;
 }) {
   const prefersReduced = useReducedMotion();
   const ease = [0.16, 1, 0.3, 1] as const;
@@ -46,10 +48,10 @@ function ProcessStep({
   return (
     <motion.div
       className="flex gap-8"
-      initial={prefersReduced ? false : { opacity: 0 }}
-      whileInView={{ opacity: 1 }}
+      initial={prefersReduced ? false : { opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.45, delay, ease }}
     >
       <div
         className="font-display text-orange leading-none shrink-0"
@@ -58,24 +60,12 @@ function ProcessStep({
         <CountUp to={n} prefix="0" duration={1.2} />
       </div>
       <div className="pt-3">
-        <motion.h3
-          className="font-display text-2xl md:text-[1.7rem] mb-3"
-          initial={prefersReduced ? false : { opacity: 0, x: -28 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.7, delay: 0.3, ease }}
-        >
+        <h3 className="font-display text-2xl md:text-[1.7rem] mb-3">
           {title}
-        </motion.h3>
-        <motion.p
-          className="text-base text-ink-muted leading-relaxed max-w-[38ch]"
-          initial={prefersReduced ? false : { opacity: 0, x: -28 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.75, delay: 0.55, ease }}
-        >
+        </h3>
+        <p className="text-base text-ink-muted leading-relaxed max-w-[38ch]">
           {detail}
-        </motion.p>
+        </p>
       </div>
     </motion.div>
   );
@@ -104,12 +94,13 @@ export function Process() {
       </Reveal>
 
       <div className="grid md:grid-cols-2 gap-x-16 gap-y-14">
-        {STEPS.map((s) => (
+        {STEPS.map((s, i) => (
           <ProcessStep
             key={s.n}
             n={s.n}
             title={s.title}
             detail={s.detail}
+            delay={i * 0.08}
           />
         ))}
       </div>

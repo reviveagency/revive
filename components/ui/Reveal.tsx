@@ -16,7 +16,7 @@ export function Reveal({
   children,
   className,
   delay = 0,
-  y = 24,
+  y = 16,
   amount = 0.25,
   as = "div",
 }: Props) {
@@ -34,7 +34,7 @@ export function Reveal({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount }}
       transition={{
-        duration: 0.9,
+        duration: 0.45,
         delay,
         ease: [0.16, 1, 0.3, 1],
       }}

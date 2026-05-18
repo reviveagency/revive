@@ -16,7 +16,7 @@ const links = [
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => setScrolled(window.scrollY > 60);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -27,13 +27,13 @@ export function Nav() {
       className="fixed top-0 inset-x-0 z-50"
       initial={false}
       animate={{
-        backgroundColor: scrolled ? "rgba(245,245,245,0.78)" : "rgba(245,245,245,0)",
-        backdropFilter: scrolled ? "blur(14px) saturate(140%)" : "blur(0px)",
+        backgroundColor: scrolled ? "rgba(245,245,245,0.9)" : "rgba(245,245,245,0)",
+        backdropFilter: scrolled ? "blur(8px) saturate(140%)" : "blur(0px)",
         borderColor: scrolled ? "rgba(10,10,10,0.08)" : "rgba(10,10,10,0)",
       }}
-      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
       style={{
-        WebkitBackdropFilter: scrolled ? "blur(14px) saturate(140%)" : "blur(0px)",
+        WebkitBackdropFilter: scrolled ? "blur(8px) saturate(140%)" : "blur(0px)",
         borderBottomWidth: 1,
       }}
     >

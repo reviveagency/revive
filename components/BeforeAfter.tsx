@@ -108,7 +108,10 @@ export function BeforeAfter({ beforeImage, afterImage, alt }: Props) {
             }}
             aria-hidden
           >
-            <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 size-12 rounded-full bg-white border border-line-strong grid place-items-center text-ink shadow-lg">
+            <div
+              className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 size-12 rounded-full bg-white border border-line-strong grid place-items-center text-ink shadow-lg transition-transform duration-[150ms] ease-out"
+              style={{ transform: `translate(-50%, -50%) scale(${active ? 1.08 : 1})` }}
+            >
               <Arrows />
             </div>
           </div>
@@ -133,7 +136,7 @@ export function BeforeAfter({ beforeImage, afterImage, alt }: Props) {
           <Reveal key={c.label} delay={i * 0.08}>
             <div className="bg-surface p-8 md:p-10 h-full">
               <div className="font-display text-[clamp(2.2rem,4vw,3.2rem)] text-ink leading-[0.95]">
-                <CountUp to={c.num} prefix={c.prefix} suffix={c.suffix} />
+                <CountUp to={c.num} prefix={c.prefix} suffix={c.suffix} duration={1.2} />
               </div>
               <div className="text-xs uppercase tracking-[0.16em] text-ink-faint mt-3">
                 {c.label}

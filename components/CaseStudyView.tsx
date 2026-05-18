@@ -53,16 +53,17 @@ export function CaseStudyView({ caseStudy }: { caseStudy: CaseStudy }) {
         </Reveal>
       </section>
 
-      {/* Hero image */}
+      {/* Hero image — full-resolution screenshot, no device frame, natural dimensions */}
       <Reveal>
         <div className="container-page">
-          <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden border border-line bg-surface">
+          <div className="w-full rounded-2xl overflow-hidden border border-line bg-surface">
             <Image
               src={caseStudy.hero}
-              alt={caseStudy.name}
-              fill
+              alt={`${caseStudy.name} desktop site`}
+              width={2400}
+              height={1500}
               priority
-              className="object-cover"
+              className="w-full h-auto block"
               sizes="100vw"
             />
           </div>
@@ -93,6 +94,33 @@ export function CaseStudyView({ caseStudy }: { caseStudy: CaseStudy }) {
             </div>
           </Reveal>
         </div>
+      </section>
+
+      {/* Mobile-view screenshot — natural dimensions at 390px width */}
+      <section className="container-page mt-24 md:mt-32">
+        <Reveal>
+          <div className="text-xs uppercase tracking-[0.18em] text-ink-faint mb-6">
+            The mobile view
+          </div>
+        </Reveal>
+        <Reveal delay={0.06}>
+          {/* TODO: replace with real mobile screenshot from {caseStudy.client} at 390px width */}
+          <div
+            className="mx-auto w-[390px] max-w-full rounded-2xl border border-dashed border-line-strong bg-surface aspect-[390/844] grid place-items-center text-center px-6"
+            role="img"
+            aria-label={`${caseStudy.name} mobile screenshot placeholder`}
+          >
+            <div>
+              <div className="text-xs uppercase tracking-[0.18em] text-ink-faint mb-3">
+                Mobile screenshot · 390 × 844
+              </div>
+              <div className="text-sm text-ink-muted leading-relaxed max-w-[28ch] mx-auto">
+                Placeholder. Replace with the real mobile screenshot from{" "}
+                {caseStudy.client}.
+              </div>
+            </div>
+          </div>
+        </Reveal>
       </section>
 
       {/* Approach */}
@@ -145,6 +173,7 @@ export function CaseStudyView({ caseStudy }: { caseStudy: CaseStudy }) {
                     to={o.value}
                     decimals={o.decimals ?? 0}
                     suffix={o.suffix}
+                    duration={1.2}
                   />
                 </div>
                 <div className="text-xs uppercase tracking-[0.16em] text-ink-faint mt-4 max-w-[20ch]">
