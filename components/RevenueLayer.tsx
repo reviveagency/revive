@@ -4,6 +4,11 @@ import Link from "next/link";
 import { ArrowDown } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Reveal } from "./ui/Reveal";
+// Note: per-element SVG motion (motion.g / motion.path / motion.circle) is
+// avoided inside the diagram below because framer-motion's whileInView relies
+// on IntersectionObserver, which does not reliably fire on SVG sub-elements
+// (they have no DOM layout box). The whole diagram fades in via the wrapping
+// Reveal (motion.div) instead.
 
 const DARK_BG = "#111110";
 const PANEL_BG = "rgba(255,255,255,0.04)";
@@ -78,14 +83,28 @@ function RevenueItem({
 }
 
 function CommercialDiagram() {
-  const prefersReduced = useReducedMotion();
-  const ease = [0.16, 1, 0.3, 1] as const;
-
   const channels = [
     { x: 180, label: "Affiliate tracking" },
     { x: 560, label: "Lead routing" },
     { x: 940, label: "CPC landing pages" },
   ];
+
+  const topPath = (cx: number) => {
+    const startX = 560;
+    const startY = 84;
+    const endX = cx + 120;
+    const endY = 168;
+    const midY = (startY + endY) / 2;
+    return `M ${startX} ${startY} C ${startX} ${midY}, ${endX} ${midY}, ${endX} ${endY}`;
+  };
+  const botPath = (cx: number) => {
+    const startX = cx + 120;
+    const startY = 252;
+    const endX = 560;
+    const endY = 336;
+    const midY = (startY + endY) / 2;
+    return `M ${startX} ${startY} C ${startX} ${midY}, ${endX} ${midY}, ${endX} ${endY}`;
+  };
 
   return (
     <div className="mt-14 md:mt-20">
@@ -96,12 +115,7 @@ function CommercialDiagram() {
         aria-label="Commercial stack diagram: a website feeding affiliate tracking, lead routing, and CPC landing pages, all converging into revenue."
       >
         {/* Website node */}
-        <motion.g
-          initial={prefersReduced ? false : { opacity: 0, y: -8 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.45, ease }}
-        >
+        <g>
           <rect
             x="440"
             y="20"
@@ -124,41 +138,23 @@ function CommercialDiagram() {
           >
             Your website
           </text>
-        </motion.g>
+        </g>
 
         {/* Connectors: Website → 3 channels */}
-        {channels.map((c, i) => {
-          const startX = 560;
-          const startY = 84;
-          const endX = c.x + 120;
-          const endY = 168;
-          const midY = (startY + endY) / 2;
-          const d = `M ${startX} ${startY} C ${startX} ${midY}, ${endX} ${midY}, ${endX} ${endY}`;
-          return (
-            <motion.path
-              key={`top-${i}`}
-              d={d}
-              fill="none"
-              stroke={LINE_FAINT}
-              strokeWidth="1.1"
-              strokeLinecap="round"
-              initial={prefersReduced ? false : { pathLength: 0, opacity: 0 }}
-              whileInView={{ pathLength: 1, opacity: 1 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.7, delay: 0.15 + i * 0.06, ease }}
-            />
-          );
-        })}
+        {channels.map((c, i) => (
+          <path
+            key={`top-${i}`}
+            d={topPath(c.x)}
+            fill="none"
+            stroke={LINE_FAINT}
+            strokeWidth="1.1"
+            strokeLinecap="round"
+          />
+        ))}
 
         {/* Channel cards */}
         {channels.map((c, i) => (
-          <motion.g
-            key={`ch-${i}`}
-            initial={prefersReduced ? false : { opacity: 0, y: 8 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.45, delay: 0.25 + i * 0.06, ease }}
-          >
+          <g key={`ch-${i}`}>
             <rect
               x={c.x}
               y="168"
@@ -190,40 +186,23 @@ function CommercialDiagram() {
             >
               {c.label}
             </text>
-          </motion.g>
+          </g>
         ))}
 
         {/* Connectors: 3 channels → Revenue */}
-        {channels.map((c, i) => {
-          const startX = c.x + 120;
-          const startY = 252;
-          const endX = 560;
-          const endY = 336;
-          const midY = (startY + endY) / 2;
-          const d = `M ${startX} ${startY} C ${startX} ${midY}, ${endX} ${midY}, ${endX} ${endY}`;
-          return (
-            <motion.path
-              key={`bot-${i}`}
-              d={d}
-              fill="none"
-              stroke={LINE_FAINT}
-              strokeWidth="1.1"
-              strokeLinecap="round"
-              initial={prefersReduced ? false : { pathLength: 0, opacity: 0 }}
-              whileInView={{ pathLength: 1, opacity: 1 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.7, delay: 0.45 + i * 0.06, ease }}
-            />
-          );
-        })}
+        {channels.map((c, i) => (
+          <path
+            key={`bot-${i}`}
+            d={botPath(c.x)}
+            fill="none"
+            stroke={LINE_FAINT}
+            strokeWidth="1.1"
+            strokeLinecap="round"
+          />
+        ))}
 
         {/* Revenue node */}
-        <motion.g
-          initial={prefersReduced ? false : { opacity: 0, y: 8 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.45, delay: 0.7, ease }}
-        >
+        <g>
           <rect
             x="420"
             y="336"
@@ -257,7 +236,7 @@ function CommercialDiagram() {
           >
             Revenue
           </text>
-        </motion.g>
+        </g>
       </svg>
     </div>
   );

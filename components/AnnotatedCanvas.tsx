@@ -1,6 +1,5 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
 import { Reveal } from "./ui/Reveal";
 
 /**
@@ -93,8 +92,6 @@ const ANNOTATIONS: Annotation[] = [
 ];
 
 export function AnnotatedCanvas() {
-  const prefersReduced = useReducedMotion();
-
   return (
     <section id="includes" className="container-page mt-40 md:mt-48">
       <Reveal>
@@ -179,56 +176,37 @@ export function AnnotatedCanvas() {
             <text x="370" y="668" fill="rgba(10,10,10,0.36)" fontSize="9">© Your brand. Tightened up.</text>
           </g>
 
-          {/* annotation lines — orange hairlines that draw on scroll-in */}
+          {/* annotation lines — static, render on first paint */}
           {ANNOTATIONS.map((a) => (
-            <motion.path
+            <path
               key={`line-${a.id}`}
               d={a.pathD}
               fill="none"
               stroke="#F26522"
               strokeWidth="1.2"
               strokeLinecap="round"
-              initial={prefersReduced ? false : { pathLength: 0 }}
-              whileInView={{ pathLength: 1 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{
-                duration: 0.9,
-                delay: a.delay,
-                ease: [0.16, 1, 0.3, 1],
-              }}
             />
           ))}
 
           {/* target dots on wireframe */}
           {ANNOTATIONS.map((a) => (
-            <motion.circle
+            <circle
               key={`dot-${a.id}`}
               cx={a.target[0]}
               cy={a.target[1]}
               r="3.5"
               fill="#F26522"
-              initial={prefersReduced ? false : { opacity: 0, scale: 0.4 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.4, delay: a.delay + 0.7 }}
             />
           ))}
 
-          {/* annotation text blocks */}
+          {/* annotation text blocks — static foreignObject. Per-element SVG
+              motion was removed: framer-motion's whileInView relies on
+              IntersectionObserver, which does not fire reliably on SVG
+              sub-elements, so previously these stayed invisible. */}
           {ANNOTATIONS.map((a) => {
             const fx = a.side === "left" ? 20 : 980;
             return (
-              <motion.g
-                key={`text-${a.id}`}
-                initial={prefersReduced ? false : { opacity: 0, y: 6 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{
-                  duration: 0.7,
-                  delay: a.delay + 0.5,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-              >
+              <g key={`text-${a.id}`}>
                 <foreignObject
                   x={fx}
                   y={a.textY}
@@ -262,7 +240,7 @@ export function AnnotatedCanvas() {
                     {a.detail}
                   </div>
                 </foreignObject>
-              </motion.g>
+              </g>
             );
           })}
         </svg>
